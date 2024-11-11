@@ -7,6 +7,12 @@ class Item(BaseModel):
     Nom: str
     edat: int
     ciutat: str
+    
+
+@app.get("/")
+def read_item():
+    return {"Hola profe"}
+
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int):
@@ -14,4 +20,4 @@ def read_item(item_id: int):
 
 @app.post("/items/")
 def create_item(item: Item):
-    return {"Nom": item.name, "edat": item.price, "ciutat": item.ciutat}
+    return {"Nom": item.Nom, "edat": item.edat, "ciutat": item.ciutat}
