@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
 
@@ -7,6 +8,9 @@ class Item(BaseModel):
     Nom: str
     edat: int
     ciutat: str
+    alçada: float
+    pes: float
+    any_neixament: Optional[int] = None
     
 
 @app.get("/")
