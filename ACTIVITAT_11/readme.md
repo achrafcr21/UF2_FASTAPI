@@ -2,4 +2,4 @@
 
 ![Disseny base de dades](img/dissenyBD.png)
 
-![base de dades creada](img/base_de_dades.png)
+![base de dades creada](img/baseDeDades.png)
