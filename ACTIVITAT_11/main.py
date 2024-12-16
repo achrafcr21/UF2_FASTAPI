@@ -1,16 +1,20 @@
 from fastapi import FastAPI
 from database import db_connection
-
+import random
 
 
 app = FastAPI()
 
 @app.get("/penjat/boto")
 async def boto_comencar_partida():
+    print("Entrem a a conexio")
     conn = db_connection()
+    print(conn)
     cursor = conn.cursor()
-    cursor.execute("SELECT word FROM word WHERE word = 'començar partida'")
-    text = cursor.fetchone()
+    # cursor.execute("SELECT word FROM word WHERE theme = 'general'")
+    cursor.execute("SELECT * FROM WORD")
+    text = cursor.fetchall()
+    print(text)
     conn.close()
     return {"text": text[0]} if text else {"text": ""}
     
