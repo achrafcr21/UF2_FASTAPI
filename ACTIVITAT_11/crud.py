@@ -48,3 +48,31 @@ def get_paraula_aleatoria():
         conn.close()
         return random.choice(paraules)[0] if paraules else ""
     return ""
+
+
+#funció per obtenir etadistiques del usuari
+
+def get_registre_jugador(user_id: int):
+    conn = db_connection()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT PPA, total_games, games_won, best_game
+            FROM log_record
+            WHERE user_id = %s
+        """, (user_id,))
+        registre = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        # Retorna les dades en format diccionari
+        if registre:
+            return {
+                "ppa": registre[0],
+                "total_games": registre[1],
+                "games_won": registre[2],
+                "best_game": registre[3]
+            }
+        else:
+            return {}
+    return {}

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from crud import get_boto_comencar_partida, get_intents, get_alfabet, get_paraula_aleatoria
+from crud import get_boto_comencar_partida, get_intents, get_alfabet, get_paraula_aleatoria, get_registre_jugador
 
 app = FastAPI()
 
@@ -26,3 +26,9 @@ async def obtenir_alfabet(lang: str):
 async def obtenir_paraula_aleatoria():
     paraula = get_paraula_aleatoria()
     return {"word": paraula}
+
+
+@app.get("/penjat/registre/{user_id}")
+async def obtenir_registre_jugador(user_id: int):
+    registre = get_registre_jugador(user_id)
+    return registre if registre else {"message": "No s'ha trobat el registre del jugador"}
