@@ -1,52 +1,28 @@
 from fastapi import FastAPI
-from database import db_connection
-import random
-
+from crud import get_boto_comencar_partida, get_intents, get_alfabet, get_paraula_aleatoria
 
 app = FastAPI()
 
+# Endpoint per al botó "Començar partida"
 @app.get("/penjat/boto")
 async def boto_comencar_partida():
-    print("Entrem a a conexio")
-    conn = db_connection()
-    print(conn)
-    cursor = conn.cursor()
-    # cursor.execute("SELECT word FROM word WHERE theme = 'general'")
-    cursor.execute("SELECT * FROM WORD")
-    text = cursor.fetchall()
-    print(text)
-    conn.close()
-    return {"text": text[0]} if text else {"text": ""}
-    
+    text = get_boto_comencar_partida()
+    return {"text": text}
 
-
-#endpoint pels intents:
+# Endpoint per obtenir intents incorrectes
 @app.get("/penjat/intents/{log_id}")
 async def obtenir_intents(log_id: int):
-    conn = db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM attempt WHERE log_id = %s AND is_correct = false", (log_id,))
-    intents = cursor.fetchone()
-    conn.close()
-    return {"incorrect_attempts": intents[0]}
+    intents = get_intents(log_id)
+    return {"incorrect_attempts": intents}
 
-
-#endpoint alphabet
+# Endpoint per obtenir l'alfabet segons idioma
 @app.get("/penjat/alfabet/{lang}")
 async def obtenir_alfabet(lang: str):
-    conn = db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT letter FROM alphabet WHERE lang = %s", (lang,))
-    letters = cursor.fetchall()
-    conn.close()
-    return {"alphabet": [row[0] for row in letters]}
+    letters = get_alfabet(lang)
+    return {"alphabet": letters}
 
-
+# Endpoint per obtenir una paraula aleatòria
 @app.get("/penjat/paraula")
 async def obtenir_paraula_aleatoria():
-    conn = db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT word FROM word")
-    paraules = cursor.fetchall()
-    conn.close()
-    return {"word": random.choice(paraules)[0]} if paraules else {"word": ""}
+    paraula = get_paraula_aleatoria()
+    return {"word": paraula}
